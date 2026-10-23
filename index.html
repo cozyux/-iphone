@@ -2,226 +2,390 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My iPhone</title>
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #e8e8ed;
-      font-family: -apple-system, sans-serif;
-    }
-
-    .phone {
-      width: min(340px, 92vw);
-      height: min(700px, 88dvh);
-      min-height: 440px;
-      border: 8px solid #222;
-      border-radius: 48px;
-      overflow: hidden;
-      position: relative;
-      color: white;
-      background:
-        radial-gradient(ellipse at 25% 35%, #f8a9c6, transparent 40%),
-        radial-gradient(ellipse at 75% 65%, #695ce7, transparent 45%),
-        linear-gradient(145deg, #172c50, #10101c);
-    }
-
-    .status {
-      display: flex;
-      justify-content: space-between;
-      padding: 18px 25px;
-      font-size: 12px;
-    }
-
-    .island {
-      width: 90px;
-      height: 25px;
-      background: #080808;
-      border-radius: 20px;
-      position: absolute;
-      top: 9px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .clock {
-      text-align: center;
-      margin-top: 45px;
-    }
-
-    .clock .date { font-size: 15px; }
-    .clock .time {
-      font-size: 72px;
-      font-weight: 300;
-      letter-spacing: -4px;
-    }
-
-    .screen {
-      padding: 15px 22px;
-    }
-
-    .apps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px 10px;
-      margin-top: 32px;
-    }
-
-    .app {
-      border: 0;
-      padding: 0;
-      background: none;
-      color: white;
-      font: inherit;
-      cursor: pointer;
-      text-align: center;
-      font-size: 11px;
-    }
-
-    .app-icon {
-      width: 53px;
-      height: 53px;
-      margin: 0 auto 6px;
-      border-radius: 15px;
-      display: grid;
-      place-items: center;
-      font-size: 27px;
-      background: #ffffff30;
-      backdrop-filter: blur(12px);
-    }
-
-    .dock {
-      position: absolute;
-      bottom: 28px;
-      left: 14px;
-      right: 14px;
-      padding: 12px;
-      border-radius: 27px;
-      background: #ffffff30;
-      display: flex;
-      justify-content: space-around;
-    }
-
-    .dock button {
-      border: 0;
-      font-size: 27px;
-      background: none;
-      cursor: pointer;
-    }
-
-    .panel {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      background: #f7f7fa;
-      color: #17171a;
-      display: none;
-      padding: 55px 20px 25px;
-    }
-
-    .panel h2 { margin-top: 0; }
-    .panel p { line-height: 1.6; }
-    .back {
-      border: 0;
-      border-radius: 20px;
-      padding: 9px 15px;
-      background: #e4e4ec;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    .bubble {
-      background: #1684ff;
-      color: white;
-      padding: 10px 14px;
-      border-radius: 18px;
-      margin: 12px 0 12px auto;
-      max-width: 85%;
-      width: fit-content;
-    }
-
-    .homebar {
-      position: absolute;
-      z-index: 4;
-      bottom: 7px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 105px;
-      height: 4px;
-      border-radius: 5px;
-      background: white;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>My iPhone</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #dedee3;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: white;
+}
+.phone {
+  width: min(390px, 100vw);
+  height: min(844px, 100dvh);
+  min-height: 570px;
+  position: relative;
+  overflow: hidden;
+  background: #17243e;
+  border: 5px solid #202024;
+  border-radius: 48px;
+  isolation: isolate;
+  touch-action: pan-y;
+}
+.wallpaper {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse at 20% 30%, #f2b1cf, transparent 45%),
+    radial-gradient(ellipse at 80% 60%, #6965c8, transparent 48%),
+    linear-gradient(155deg, #172947, #222044 55%, #15172c);
+  background-size: cover;
+  background-position: center;
+}
+.wallpaper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #00000012, transparent 45%, #00000025);
+}
+.status {
+  height: 49px;
+  padding: 16px 27px 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+}
+.status-icons { font-size: 12px; }
+.island {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 27px;
+  border-radius: 20px;
+  background: #050505;
+}
+.lock-icon { text-align: center; font-size: 18px; margin-top: 17px; }
+.date {
+  text-align: center;
+  margin-top: 13px;
+  font-size: 19px;
+  font-weight: 500;
+  text-shadow: 0 1px 8px #0003;
+}
+.clock {
+  text-align: center;
+  font-size: clamp(76px, 24vw, 102px);
+  font-weight: 300;
+  letter-spacing: -5px;
+  line-height: 1.1;
+  margin-top: 1px;
+  font-variant-numeric: tabular-nums;
+}
+.notifications {
+  margin: 28px 13px 0;
+  padding: 14px 16px;
+  border: 1px solid #ffffff30;
+  border-radius: 19px;
+  background: #eeeeee32;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+.notification-top { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.notification-app {
+  width: 25px; height: 25px; border-radius: 7px;
+  display: grid; place-items: center; background: #42c66b;
+}
+.notification-time { margin-left: auto; opacity: .8; }
+.notification-title { font-size: 14px; font-weight: 650; margin-top: 8px; }
+.notification-body { font-size: 13px; line-height: 1.45; margin-top: 3px; }
+.bottom { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 28px 28px; }
+.shortcuts { display: flex; justify-content: space-between; margin-bottom: 29px; }
+.shortcut {
+  width: 48px; height: 48px; border: 0; border-radius: 50%;
+  background: #25262c9c; color: white; font-size: 22px;
+  display: grid; place-items: center; cursor: pointer;
+}
+.swipe-hint { text-align: center; font-size: 12px; text-shadow: 0 1px 5px #0008; }
+.homebar {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 108px; height: 4px; border-radius: 5px; background: white;
+}
+.screen {
+  position: absolute; inset: 0; z-index: 5;
+  display: none; color: #17171b; background: #f5f5fa;
+  padding: 65px 23px 40px;
+}
+.screen.active { display: block; }
+.screen h2 { font-size: 27px; margin: 18px 0; }
+.back {
+  border: 0; background: #e4e4ec; border-radius: 20px;
+  padding: 10px 15px; font-size: 15px;
+}
+.passcode-dots { display: flex; justify-content: center; gap: 17px; margin: 38px 0; }
+.dot { width: 11px; height: 11px; border: 1px solid #333; border-radius: 50%; }
+.dot.filled { background: #333; }
+.keypad {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; max-width: 280px; margin: auto;
+}
+.key {
+  height: 62px; border: 0; border-radius: 50%;
+  background: #e4e4eb; font-size: 24px; color: #17171b;
+}
+.key small { display: block; font-size: 8px; letter-spacing: 2px; }
+.message { text-align: center; font-size: 14px; min-height: 20px; }
+.home-screen {
+  background: linear-gradient(145deg, #e8b6d1, #817bd1, #3b4d7b);
+  color: white;
+}
+.home-title { font-size: 35px; font-weight: 650; margin: 35px 0 24px; }
+.apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px 8px; }
+.app { border: 0; background: none; color: white; font-size: 11px; }
+.app-icon {
+  width: 52px; height: 52px; margin: 0 auto 6px; border-radius: 14px;
+  background: #ffffff40; display: grid; place-items: center; font-size: 26px;
+}
+.home-dock {
+  position: absolute; left: 14px; right: 14px; bottom: 30px;
+  display: flex; justify-content: space-around; padding: 12px;
+  background: #ffffff38; border-radius: 25px;
+}
+.home-dock button { border: 0; background: none; font-size: 26px; }
+.app-page {
+  position: absolute; inset: 0; z-index: 7; display: none;
+  background: #f7f7fa; color: #18181c; padding: 60px 22px 30px;
+}
+.app-page.active { display: block; }
+.bubble {
+  padding: 10px 14px; border-radius: 18px; margin: 14px 0 14px auto;
+  background: #1684ff; color: white; width: fit-content; max-width: 90%;
+}
+.upload {
+  display: inline-block; margin-top: 16px; padding: 11px 14px;
+  border-radius: 12px; background: #e3e3ed; color: #17171b;
+}
+.upload input { display: none; }
+@media (max-height: 650px) {
+  .lock-icon { margin-top: 4px; }
+  .clock { font-size: 70px; }
+  .notifications { margin-top: 12px; }
+  .bottom { padding-bottom: 19px; }
+  .shortcuts { margin-bottom: 15px; }
+}
+</style>
 </head>
 <body>
-  <main class="phone">
+<main class="phone" id="phone">
+  <div class="wallpaper" id="wallpaper"></div>
+
+  <div id="lock">
     <div class="status">
-      <span>9:41</span><span>●●●  Wi-Fi  ▰</span>
+      <span id="statusTime">9:41</span>
+      <span class="status-icons">●●●　 Wi-Fi　 ▰</span>
     </div>
     <div class="island"></div>
+    <div class="lock-icon">🔒</div>
+    <div class="date" id="date"></div>
+    <div class="clock" id="clock">9:41</div>
 
-    <header class="clock">
-      <div class="date">나만의 작은 세상</div>
-      <div class="time" id="clock">9:41</div>
-    </header>
-
-    <div class="screen">
-      <div class="apps">
-        <button class="app" onclick="openApp('사진')">
-          <div class="app-icon">🌸</div>사진
-        </button>
-        <button class="app" onclick="openApp('메시지')">
-          <div class="app-icon">💬</div>메시지
-        </button>
-        <button class="app" onclick="openApp('음악')">
-          <div class="app-icon">🎵</div>음악
-        </button>
-        <button class="app" onclick="openApp('설정')">
-          <div class="app-icon">⚙️</div>설정
-        </button>
+    <div class="notifications">
+      <div class="notification-top">
+        <div class="notification-app">💬</div>
+        <span>메시지</span>
+        <span class="notification-time">지금</span>
       </div>
+      <div class="notification-title">새로운 메시지</div>
+      <div class="notification-body">여기에 나만의 알림이 표시돼요.</div>
     </div>
 
-    <div class="dock">
-      <button onclick="openApp('전화')" aria-label="전화">📞</button>
-      <button onclick="openApp('메시지')" aria-label="메시지">💬</button>
-      <button onclick="openApp('사진')" aria-label="사진">🌄</button>
-      <button onclick="openApp('음악')" aria-label="음악">🎧</button>
+    <div class="bottom">
+      <div class="shortcuts">
+        <button class="shortcut" id="flashlight" aria-label="손전등">🔦</button>
+        <button class="shortcut" id="camera" aria-label="카메라">📷</button>
+      </div>
+      <div class="swipe-hint">위로 쓸어올려 잠금 해제</div>
     </div>
+  </div>
 
-    <section class="panel" id="panel">
-      <button class="back" onclick="closeApp()">← 홈</button>
-      <h2 id="title"></h2>
-      <div id="content"></div>
-    </section>
-    <div class="homebar"></div>
-  </main>
+  <section class="screen" id="passcode">
+    <button class="back" onclick="showLock()">취소</button>
+    <h2 style="text-align:center">암호 입력</h2>
+    <p style="text-align:center">iPhone을 잠금 해제하려면 암호를 입력하세요.</p>
+    <div class="passcode-dots" id="dots">
+      <span class="dot"></span><span class="dot"></span>
+      <span class="dot"></span><span class="dot"></span>
+    </div>
+    <div class="message" id="passMessage">암호 1234를 입력해 보세요.</div>
+    <div class="keypad" id="keypad">
+      <button class="key" data-key="1">1<small>　</small></button>
+      <button class="key" data-key="2">2<small>ABC</small></button>
+      <button class="key" data-key="3">3<small>DEF</small></button>
+      <button class="key" data-key="4">4<small>GHI</small></button>
+      <button class="key" data-key="5">5<small>JKL</small></button>
+      <button class="key" data-key="6">6<small>MNO</small></button>
+      <button class="key" data-key="7">7<small>PQRS</small></button>
+      <button class="key" data-key="8">8<small>TUV</small></button>
+      <button class="key" data-key="9">9<small>WXYZ</small></button>
+      <button class="key" data-key="clear">지우기</button>
+      <button class="key" data-key="0">0</button>
+      <button class="key" data-key="back">⌫</button>
+    </div>
+  </section>
 
-  <script>
-    const contents = {
-      '사진': '여기에 나만의 사진첩을 만들 거야 📷',
-      '메시지': '<div class="bubble">안녕! 여기는 나만의 메시지 💗</div>',
-      '음악': '나만의 음악 앱을 만들 예정이야 🎵',
-      '설정': '배경화면과 테마를 꾸밀 수 있게 만들자 ⚙️',
-      '전화': '나만의 전화 화면 📞'
-    };
+  <section class="screen home-screen" id="home">
+    <div class="status"><span id="homeTime">9:41</span><span>●●●　Wi-Fi　▰</span></div>
+    <div class="island"></div>
+    <div class="home-title">나의 iPhone</div>
+    <div class="apps">
+      <button class="app" onclick="openApp('사진')"><div class="app-icon">🌄</div>사진</button>
+      <button class="app" onclick="openApp('메시지')"><div class="app-icon">💬</div>메시지</button>
+      <button class="app" onclick="openApp('음악')"><div class="app-icon">🎵</div>음악</button>
+      <button class="app" onclick="openApp('설정')"><div class="app-icon">⚙️</div>설정</button>
+    </div>
+    <div class="home-dock">
+      <button onclick="openApp('전화')">📞</button>
+      <button onclick="openApp('메시지')">💬</button>
+      <button onclick="openApp('사진')">🌄</button>
+      <button onclick="openApp('음악')">🎧</button>
+    </div>
+  </section>
 
-    function openApp(name) {
-      document.getElementById('title').textContent = name;
-      document.getElementById('content').innerHTML =
-        contents[name] || '';
-      document.getElementById('panel').style.display = 'block';
+  <section class="app-page" id="appPage">
+    <button class="back" onclick="closeApp()">← 홈</button>
+    <h2 id="appTitle"></h2>
+    <div id="appContent"></div>
+  </section>
+
+  <div class="homebar"></div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+let code = "";
+let startY = null;
+
+function updateClock() {
+  const now = new Date();
+  const time = now.toLocaleTimeString("ko-KR", {
+    hour: "2-digit", minute: "2-digit", hour12: false
+  });
+  $("clock").textContent = time;
+  $("statusTime").textContent = time;
+  $("homeTime").textContent = time;
+  $("date").textContent = now.toLocaleDateString("ko-KR", {
+    month: "long", day: "numeric", weekday: "long"
+  });
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+function showPasscode() {
+  $("passcode").classList.add("active");
+  $("home").classList.remove("active");
+  $("appPage").classList.remove("active");
+  $("lock").style.display = "none";
+  code = "";
+  drawDots();
+  $("passMessage").textContent = "암호 1234를 입력해 보세요.";
+}
+function showLock() {
+  $("passcode").classList.remove("active");
+  $("home").classList.remove("active");
+  $("appPage").classList.remove("active");
+  $("lock").style.display = "block";
+}
+function drawDots() {
+  document.querySelectorAll(".dot").forEach((dot, i) => {
+    dot.classList.toggle("filled", i < code.length);
+  });
+}
+function enterKey(key) {
+  if (key === "clear") code = "";
+  else if (key === "back") code = code.slice(0, -1);
+  else if (code.length < 4) code += key;
+  drawDots();
+
+  if (code.length === 4) {
+    if (code === "1234") {
+      $("passMessage").textContent = "";
+      $("passcode").classList.remove("active");
+      $("home").classList.add("active");
+      $("lock").style.display = "none";
+    } else {
+      $("passMessage").textContent = "암호가 틀렸어요. 다시 입력해 주세요.";
+      setTimeout(() => {
+        code = "";
+        drawDots();
+      }, 650);
     }
+  }
+}
+$("keypad").addEventListener("click", e => {
+  const button = e.target.closest("button[data-key]");
+  if (button) enterKey(button.dataset.key);
+});
 
-    function closeApp() {
-      document.getElementById('panel').style.display = 'none';
-    }
-  </script>
+function openApp(name) {
+  $("appTitle").textContent = name;
+  const contents = {
+    "사진": '<p>나만의 사진첩이에요 📷</p><label class="upload">배경화면 사진 선택<input type="file" id="photoInput" accept="image/*"></label>',
+    "메시지": '<div class="bubble">안녕! 나만의 메시지 💗</div><p>대화 기능은 다음 단계에서 더 만들어 보자.</p>',
+    "음악": "<p>나만의 음악 앱 🎵</p>",
+    "설정": '<p>배경화면을 변경할 수 있어요.</p><label class="upload">사진 선택<input type="file" id="settingPhoto" accept="image/*"></label><p>암호는 현재 1234예요.</p>',
+    "전화": "<p>나만의 전화 화면 📞</p>"
+  };
+  $("appContent").innerHTML = contents[name] || "";
+  $("appPage").classList.add("active");
+
+  ["photoInput", "settingPhoto"].forEach(id => {
+    const input = $(id);
+    if (input) input.addEventListener("change", changeWallpaper);
+  });
+}
+function closeApp() {
+  $("appPage").classList.remove("active");
+}
+function changeWallpaper(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (!file.type.startsWith("image/")) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    $("wallpaper").style.backgroundImage = `url("${e.target.result}")`;
+    $("wallpaper").style.backgroundSize = "cover";
+    $("wallpaper").style.backgroundPosition = "center";
+  };
+  reader.readAsDataURL(file);
+}
+
+$("phone").addEventListener("touchstart", e => {
+  startY = e.touches[0].clientY;
+}, {passive:true});
+$("phone").addEventListener("touchend", e => {
+  if (startY === null) return;
+  const endY = e.changedTouches[0].clientY;
+  if (startY - endY > 55 &&
+      $("lock").style.display !== "none" &&
+      !$("passcode").classList.contains("active")) {
+    showPasscode();
+  }
+  startY = null;
+}, {passive:true});
+
+$("phone").addEventListener("mousedown", e => {
+  startY = e.clientY;
+});
+$("phone").addEventListener("mouseup", e => {
+  if (startY !== null && startY - e.clientY > 55 &&
+      $("lock").style.display !== "none") showPasscode();
+  startY = null;
+});
+
+$("flashlight").addEventListener("click", () => {
+  $("flashlight").textContent =
+    $("flashlight").textContent === "🔦" ? "💡" : "🔦";
+});
+$("camera").addEventListener("click", () => openApp("사진"));
+</script>
 </body>
 </html>
