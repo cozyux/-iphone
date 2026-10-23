@@ -15,10 +15,7 @@
     color: #fff; display: flex; align-items: center; justify-content: center;
   }
 
-  /* 폰 화면: 브라우저 전체를 채움 */
-  .phone {
-    position: fixed; inset: 0; overflow: hidden; background: #000; user-select: none; touch-action: none;
-  }
+  .phone { position: fixed; inset: 0; overflow: hidden; background: #000; user-select: none; touch-action: none; }
   .wall {
     position: absolute; inset: 0; background: linear-gradient(160deg, #6f86b3, #2d3150 60%, #12131f);
     background-size: cover; background-position: center; transition: filter .3s;
@@ -35,17 +32,18 @@
   .statusbar {
     position: absolute; top: 0; left: 0; right: 0; height: 54px; z-index: 20;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 6px 26px 0 44px; color: #fff; pointer-events: none;
+    padding: 6px 26px 0 44px; color: #fff; pointer-events: none; transition: opacity .3s;
   }
-  .statusbar .clk { font-size: 15.5px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.2px; }
-  .statusbar .right { display: flex; align-items: center; gap: 5px; }
+  .phone.passmode .statusbar { opacity: 0; }
+  .statusbar .clk { font-size: 15.5px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.6px; }
+  .statusbar .right { display: flex; align-items: center; gap: 6px; }
   .statusbar svg { display: block; fill: #fff; }
 
   /* 잠금화면 */
   .lock-date { position: absolute; top: 84px; width: 100%; text-align: center; font-size: 19px; font-weight: 600; }
   .lock-clock {
     position: absolute; top: 112px; width: 100%; text-align: center;
-    font-size: 112px; font-weight: 200; line-height: 1; letter-spacing: -6px; font-variant-numeric: tabular-nums;
+    font-size: 112px; font-weight: 200; line-height: 1; letter-spacing: -9px; font-variant-numeric: tabular-nums;
   }
   .no-event { position: absolute; left: 32px; top: 290px; font-size: 14px; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,.25); }
 
@@ -74,8 +72,44 @@
   .lock-btn.left { left: 48px; }
   .lock-btn.right { right: 48px; }
   .lock-btn svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-
   .unlock-hint { position: absolute; bottom: 100px; width: 100%; text-align: center; font-size: 13px; opacity: .7; pointer-events: none; }
+
+  /* 암호 입력 화면 */
+  .pass { position: absolute; inset: 0; z-index: 15; opacity: 0; pointer-events: none; transition: opacity .35s; }
+  .pass.show { opacity: 1; pointer-events: auto; }
+  .pass .wall-tint { position: absolute; inset: 0; background: rgba(255,255,255,.08); backdrop-filter: blur(22px) brightness(.9); -webkit-backdrop-filter: blur(22px) brightness(.9); }
+  .island {
+    position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 200px; height: 50px; border-radius: 30px;
+    background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 18px;
+  }
+  .island svg { display: block; }
+  .pass-title { position: absolute; top: 160px; width: 100%; text-align: center; font-size: 17px; font-weight: 500; }
+  .dots { position: absolute; top: 196px; left: 0; right: 0; display: flex; justify-content: center; gap: 22px; }
+  .dots span { width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid #fff; transition: background .15s; }
+  .dots span.on { background: #fff; }
+  .dots.shake { animation: shake .4s; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); } 20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); } 60% { transform: translateX(-8px); } 80% { transform: translateX(8px); }
+  }
+
+  .keypad {
+    position: absolute; top: 284px; left: 0; right: 0; display: grid;
+    grid-template-columns: repeat(3, 76px); column-gap: 25px; row-gap: 5px; justify-content: center;
+  }
+  .key {
+    width: 76px; height: 90px; border-radius: 50%; border: none; cursor: pointer;
+    background: rgba(120,140,190,.38); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: inherit; transition: background .12s;
+  }
+  .key:active { background: rgba(200,210,230,.6); }
+  .key .n { font-size: 36px; font-weight: 400; line-height: 1; transform: scaleY(1.12); }
+  .key .l { font-size: 10px; font-weight: 600; letter-spacing: 2.2px; margin-top: 2px; height: 12px; }
+  .key.zero { grid-column: 2; }
+
+  .pass-foot { position: absolute; top: 760px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 48px; font-size: 17px; font-weight: 400; }
+  .pass-foot span { cursor: pointer; }
 
   .home-bar {
     position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
@@ -131,7 +165,6 @@
   .conv .name { font-size: 17px; font-weight: 600; }
   .conv .date { font-size: 14px; color: #8e8e93; }
   .conv .prev { font-size: 15px; color: #8e8e93; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
   .thread { display: flex; flex-direction: column; gap: 6px; padding: 14px 12px; }
   .bubble { max-width: 72%; padding: 9px 14px; border-radius: 19px; font-size: 16px; line-height: 1.35; word-break: keep-all; }
   .bubble.in { background: #26262a; align-self: flex-start; border-bottom-left-radius: 6px; }
@@ -141,7 +174,7 @@
   .inputbar .fld { flex: 1; height: 36px; border: 1px solid #3a3a3c; border-radius: 18px; padding: 0 14px;
     color: #8e8e93; font-size: 16px; display: flex; align-items: center; }
 
-  /* 편집 패널: ?edit 주소일 때만 표시 */
+  /* 편집 패널: ?edit 주소에서만 표시 */
   .panel {
     display: none; position: fixed; right: 16px; top: 16px; width: 300px; z-index: 100;
     background: #1f1f24; border-radius: 18px; padding: 22px; font-size: 14px; line-height: 1.5; max-height: 94vh; overflow: auto;
@@ -164,15 +197,9 @@
   <div class="statusbar">
     <div class="clk" id="statusTime">12:54</div>
     <div class="right">
-      <!-- 신호 -->
       <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3.2" height="4" rx="1"/><rect x="5" y="5.5" width="3.2" height="6.5" rx="1"/><rect x="10" y="3" width="3.2" height="9" rx="1"/><rect x="15" y="0" width="3.2" height="12" rx="1"/></svg>
-      <!-- 와이파이 (굵게) -->
-      <svg width="17" height="13" viewBox="0 0 17 13" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round">
-        <path d="M1.2 4.6 A10.5 10.5 0 0 1 15.8 4.6"/>
-        <path d="M4 7.6 A6.6 6.6 0 0 1 13 7.6"/>
-        <path d="M6.6 10.3 A2.8 2.8 0 0 1 10.4 10.3" />
-      </svg>
-      <!-- 배터리 -->
+      <!-- 와이파이: 부채꼴 3단 -->
+      <svg width="17" height="13" viewBox="0 0 24 18"><path d="M0.686 5.686 A16 16 0 0 1 23.314 5.686 L20.132 8.868 A11.5 11.5 0 0 0 3.868 8.868 Z"/><path d="M4.222 9.222 A11 11 0 0 1 19.778 9.222 L16.596 12.404 A6.5 6.5 0 0 0 7.404 12.404 Z"/><path d="M12 17 L7.757 12.757 A6 6 0 0 1 16.243 12.757 Z"/></svg>
       <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.8" fill="none" stroke="#fff" stroke-opacity=".4"/><rect x="2" y="2" width="17.5" height="9" rx="2.4"/><path d="M25 4.5 V8.5 C25.8 8.2 26.5 7.3 26.5 6.5 C26.5 5.7 25.8 4.8 25 4.5Z" fill-opacity=".45"/></svg>
     </div>
   </div>
@@ -197,6 +224,19 @@
       <svg viewBox="0 0 24 24"><path d="M3 8 Q3 6.5 4.5 6.5 H7 L8.5 4.5 H15.5 L17 6.5 H19.5 Q21 6.5 21 8 V18 Q21 19.5 19.5 19.5 H4.5 Q3 19.5 3 18 Z"/><circle cx="12" cy="13" r="3.8"/></svg>
     </div>
     <div class="unlock-hint">위로 밀어서 잠금 해제</div>
+  </div>
+
+  <!-- 암호 입력 화면 -->
+  <div class="pass" id="pass">
+    <div class="wall-tint"></div>
+    <div class="island">
+      <svg width="16" height="18" viewBox="0 0 16 18"><rect x="1" y="7" width="14" height="10" rx="2.5" fill="#fff"/><path d="M4.5 7 V5 A3.5 3.5 0 0 1 11.5 5 V7" fill="none" stroke="#fff" stroke-width="2"/></svg>
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.8" stroke-linecap="round"><path d="M2 7 V4 A2 2 0 0 1 4 2 H7"/><path d="M15 2 H18 A2 2 0 0 1 20 4 V7"/><path d="M20 15 V18 A2 2 0 0 1 18 20 H15"/><path d="M7 20 H4 A2 2 0 0 1 2 18 V15"/><circle cx="8" cy="9" r="1" fill="rgba(255,255,255,.55)"/><circle cx="14" cy="9" r="1" fill="rgba(255,255,255,.55)"/><path d="M7.5 14 Q11 16.5 14.5 14"/></svg>
+    </div>
+    <div class="pass-title">암호 입력</div>
+    <div class="dots" id="dots"></div>
+    <div class="keypad" id="keypad"></div>
+    <div class="pass-foot"><span id="emerg">긴급상황</span><span id="cancel">취소</span></div>
   </div>
 
   <!-- 홈 화면 -->
@@ -227,7 +267,7 @@
   <div class="home-bar" id="homeBar"></div>
 </div>
 
-<!-- 편집 패널: 주소 끝에 ?edit 을 붙였을 때만 보임 -->
+<!-- 편집 패널 -->
 <div class="panel">
   <h2>화면 설정</h2>
   <label>배경화면 사진</label>
@@ -252,6 +292,9 @@
   const phone = $('phone');
   if (location.search.includes('edit')) document.body.classList.add('edit');
 
+  // ★ 비밀번호 (여기를 원하는 번호로 바꾸세요)
+  const PASSCODE = '1204';
+
   const DAYS = ['일','월','화','수','목','금','토'];
   const pad = (n) => String(n).padStart(2, '0');
   function tick() {
@@ -263,7 +306,32 @@
   }
   tick(); setInterval(tick, 1000);
 
-  // 아이콘 (모두 흰색)
+  // ---------- 암호 키패드 ----------
+  const KEYS = [['1',''],['2','ABC'],['3','DEF'],['4','GHI'],['5','JKL'],['6','MNO'],['7','PQRS'],['8','TUV'],['9','WXYZ'],['0','']];
+  $('keypad').innerHTML = KEYS.map(([n, l]) =>
+    `<button class="key ${n==='0'?'zero':''}" data-k="${n}"><span class="n">${n}</span><span class="l">${l}</span></button>`).join('');
+  $('dots').innerHTML = Array.from({length: PASSCODE.length}, () => '<span></span>').join('');
+  let entered = '';
+
+  function renderDots() {
+    [...$('dots').children].forEach((d, i) => d.classList.toggle('on', i < entered.length));
+  }
+  function wrongCode() {
+    const d = $('dots');
+    d.classList.remove('shake'); void d.offsetWidth; d.classList.add('shake');
+    entered = ''; setTimeout(renderDots, 250);
+  }
+  $('keypad').addEventListener('click', (e) => {
+    const k = e.target.closest('.key'); if (!k) return;
+    if (entered.length >= PASSCODE.length) return;
+    entered += k.dataset.k; renderDots();
+    if (entered.length === PASSCODE.length) {
+      setTimeout(() => { entered === PASSCODE ? showHome() : wrongCode(); }, 150);
+    }
+  });
+  $('cancel').addEventListener('click', () => { entered = ''; renderDots(); showLock(); });
+
+  // ---------- 아이콘 ----------
   const ICONS = {
     weather: '<svg viewBox="0 0 32 32"><circle cx="12" cy="12" r="5" class="f"/><path d="M12 3v2M3 12h2M5.6 5.6l1.4 1.4M18.4 5.6 17 7"/><path d="M10 26h13a4.5 4.5 0 0 0 .4-9 6 6 0 0 0-11.6-1.5A4.8 4.8 0 0 0 10 26z"/></svg>',
     music: '<svg viewBox="0 0 32 32"><path d="M12 24V8l14-3v16"/><circle cx="8" cy="24" r="3.5" class="f"/><circle cx="22" cy="21" r="3.5" class="f"/></svg>',
@@ -294,7 +362,7 @@
   $('grid').innerHTML = APPS.map(appHTML).join('');
   $('dock').innerHTML = DOCK.map(appHTML).join('');
 
-  // 대화 데이터 (CONVS 수정 가능)
+  // ---------- 대화 데이터 ----------
   const CONVS = [
     { name:'+82 10-9174-5963', date:'어제', prev:'[Web발신] 진심을 다하는 롯데택배입니다.…', init:'1', msgs:[
       {from:'in', t:'[Web발신] 진심을 다하는 롯데택배입니다. 금일 배송 예정입니다.'}] },
@@ -316,14 +384,32 @@
       </div>
     </div>`).join(''));
 
-  // 화면 전환
+  // ---------- 화면 전환 ----------
   let state = 'lock';
-  const showHome = () => { state = 'home'; $('lock').classList.add('up'); $('home').classList.remove('hidden'); $('wall').classList.add('blur'); };
-  const showLock = () => {
+  function showPass() {
+    state = 'pass';
+    phone.classList.add('passmode');
+    $('pass').classList.add('show');
+  }
+  function showHome() {
+    state = 'home';
+    entered = ''; renderDots();
+    phone.classList.remove('passmode');
+    $('pass').classList.remove('show');
+    $('lock').classList.add('up');
+    $('home').classList.remove('hidden');
+    $('wall').classList.add('blur');
+  }
+  function showLock() {
     state = 'lock';
+    entered = ''; renderDots();
     $('msgApp').classList.remove('open'); $('threadApp').classList.remove('open');
-    $('lock').classList.remove('up'); $('home').classList.add('hidden'); $('wall').classList.remove('blur');
-  };
+    phone.classList.remove('passmode');
+    $('pass').classList.remove('show');
+    $('lock').classList.remove('up');
+    $('home').classList.add('hidden');
+    $('wall').classList.remove('blur');
+  }
   const openThread = (i) => {
     const c = CONVS[i];
     $('thAvatar').textContent = c.init;
@@ -347,10 +433,10 @@
     if (state === 'home') showLock();
   });
 
-  // 잠금 해제: 위로 드래그 (화면 어디서든) / 홈에서 아래로 드래그하면 잠금
+  // 잠금 해제: 잠금화면에서 위로 밀면 암호 화면 / 홈에서 아래로 밀면 잠금
   let startY = null, mode = null;
   phone.addEventListener('pointerdown', (e) => {
-    if (e.target.closest('.panel')) return;
+    if (e.target.closest('.panel') || e.target.closest('.key')) return;
     startY = e.clientY; mode = state;
   });
   window.addEventListener('pointermove', (e) => {
@@ -363,7 +449,7 @@
     if (startY === null) return;
     const dy = e.clientY - startY;
     $('lock').style.transition = ''; $('lock').style.transform = '';
-    if (mode === 'lock' && startY - e.clientY > 100) showHome();
+    if (mode === 'lock' && startY - e.clientY > 100) showPass();
     if (mode === 'home' && dy > 120 && !$('msgApp').classList.contains('open')) showLock();
     startY = null;
   });
