@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My iPhone</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #e8e8ed;
+      font-family: -apple-system, sans-serif;
+    }
+
+    .phone {
+      width: min(340px, 92vw);
+      height: min(700px, 88dvh);
+      min-height: 440px;
+      border: 8px solid #222;
+      border-radius: 48px;
+      overflow: hidden;
+      position: relative;
+      color: white;
+      background:
+        radial-gradient(ellipse at 25% 35%, #f8a9c6, transparent 40%),
+        radial-gradient(ellipse at 75% 65%, #695ce7, transparent 45%),
+        linear-gradient(145deg, #172c50, #10101c);
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      padding: 18px 25px;
+      font-size: 12px;
+    }
+
+    .island {
+      width: 90px;
+      height: 25px;
+      background: #080808;
+      border-radius: 20px;
+      position: absolute;
+      top: 9px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .clock {
+      text-align: center;
+      margin-top: 45px;
+    }
+
+    .clock .date { font-size: 15px; }
+    .clock .time {
+      font-size: 72px;
+      font-weight: 300;
+      letter-spacing: -4px;
+    }
+
+    .screen {
+      padding: 15px 22px;
+    }
+
+    .apps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px 10px;
+      margin-top: 32px;
+    }
+
+    .app {
+      border: 0;
+      padding: 0;
+      background: none;
+      color: white;
+      font: inherit;
+      cursor: pointer;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    .app-icon {
+      width: 53px;
+      height: 53px;
+      margin: 0 auto 6px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      font-size: 27px;
+      background: #ffffff30;
+      backdrop-filter: blur(12px);
+    }
+
+    .dock {
+      position: absolute;
+      bottom: 28px;
+      left: 14px;
+      right: 14px;
+      padding: 12px;
+      border-radius: 27px;
+      background: #ffffff30;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .dock button {
+      border: 0;
+      font-size: 27px;
+      background: none;
+      cursor: pointer;
+    }
+
+    .panel {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: #f7f7fa;
+      color: #17171a;
+      display: none;
+      padding: 55px 20px 25px;
+    }
+
+    .panel h2 { margin-top: 0; }
+    .panel p { line-height: 1.6; }
+    .back {
+      border: 0;
+      border-radius: 20px;
+      padding: 9px 15px;
+      background: #e4e4ec;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .bubble {
+      background: #1684ff;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 18px;
+      margin: 12px 0 12px auto;
+      max-width: 85%;
+      width: fit-content;
+    }
+
+    .homebar {
+      position: absolute;
+      z-index: 4;
+      bottom: 7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 105px;
+      height: 4px;
+      border-radius: 5px;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <main class="phone">
+    <div class="status">
+      <span>9:41</span><span>●●●  Wi-Fi  ▰</span>
+    </div>
+    <div class="island"></div>
+
+    <header class="clock">
+      <div class="date">나만의 작은 세상</div>
+      <div class="time" id="clock">9:41</div>
+    </header>
+
+    <div class="screen">
+      <div class="apps">
+        <button class="app" onclick="openApp('사진')">
+          <div class="app-icon">🌸</div>사진
+        </button>
+        <button class="app" onclick="openApp('메시지')">
+          <div class="app-icon">💬</div>메시지
+        </button>
+        <button class="app" onclick="openApp('음악')">
+          <div class="app-icon">🎵</div>음악
+        </button>
+        <button class="app" onclick="openApp('설정')">
+          <div class="app-icon">⚙️</div>설정
+        </button>
+      </div>
+    </div>
+
+    <div class="dock">
+      <button onclick="openApp('전화')" aria-label="전화">📞</button>
+      <button onclick="openApp('메시지')" aria-label="메시지">💬</button>
+      <button onclick="openApp('사진')" aria-label="사진">🌄</button>
+      <button onclick="openApp('음악')" aria-label="음악">🎧</button>
+    </div>
+
+    <section class="panel" id="panel">
+      <button class="back" onclick="closeApp()">← 홈</button>
+      <h2 id="title"></h2>
+      <div id="content"></div>
+    </section>
+    <div class="homebar"></div>
+  </main>
+
+  <script>
+    const contents = {
+      '사진': '여기에 나만의 사진첩을 만들 거야 📷',
+      '메시지': '<div class="bubble">안녕! 여기는 나만의 메시지 💗</div>',
+      '음악': '나만의 음악 앱을 만들 예정이야 🎵',
+      '설정': '배경화면과 테마를 꾸밀 수 있게 만들자 ⚙️',
+      '전화': '나만의 전화 화면 📞'
+    };
+
+    function openApp(name) {
+      document.getElementById('title').textContent = name;
+      document.getElementById('content').innerHTML =
+        contents[name] || '';
+      document.getElementById('panel').style.display = 'block';
+    }
+
+    function closeApp() {
+      document.getElementById('panel').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
