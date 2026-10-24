@@ -7,6 +7,7 @@
 <meta property="og:title" content="iPhone 잠금화면">
 <meta property="og:description" content="잠금 화면 미리보기">
 <meta name="robots" content="noindex">
+ .colon { position: relative; top: -13px; }
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; background: #000; overflow: hidden; }
@@ -43,9 +44,9 @@
   .lock-date { position: absolute; top: 84px; width: 100%; text-align: center; font-size: 19px; font-weight: 600; }
   .lock-clock {
     position: absolute; top: 112px; width: 100%; text-align: center;
-    font-size: 112px; font-weight: 200; line-height: 1; letter-spacing: -9px; font-variant-numeric: tabular-nums;
+    font-size: 112px; font-weight: 200; line-height: 1; letter-spacing: -7px; font-variant-numeric: tabular-nums;
   }
-  .no-event { position: absolute; left: 32px; top: 290px; font-size: 14px; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,.25); }
+  .no-event { position: absolute; left: 32px; top: 290px; font-size: 14px; font-weight: 400; text-shadow: 0 1px 3px rgba(0,0,0,.25); }
 
   .notif {
     position: absolute; left: 15px; right: 15px; bottom: 150px; z-index: 4;
@@ -98,7 +99,7 @@
     grid-template-columns: repeat(3, 76px); column-gap: 25px; row-gap: 5px; justify-content: center;
   }
   .key {
-    width: 76px; height: 90px; border-radius: 50%; border: none; cursor: pointer;
+    width: 76px; height: 76px; border-radius: 50%; border: none; cursor: pointer;
     background: rgba(120,140,190,.38); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
     font-family: inherit; transition: background .12s;
@@ -299,9 +300,9 @@
   const pad = (n) => String(n).padStart(2, '0');
   function tick() {
     const now = new Date();
-    const t = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-    $('clock').textContent = t;
-    $('statusTime').textContent = t;
+    const t = `${pad(now.getHours())}<span class="colon">:</span>${pad(now.getMinutes())}`;
+    $('clock').innerHTML = t;
+    $('statusTime').innerHTML = t;
     $('date').textContent = `${now.getMonth()+1}월 ${now.getDate()}일 ${DAYS[now.getDay()]}요일`;
   }
   tick(); setInterval(tick, 1000);
